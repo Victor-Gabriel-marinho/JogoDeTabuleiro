@@ -1,4 +1,5 @@
 
+import java.util.List;
 import model.Tabuleiro;
 import model.casa.Casa;
 
@@ -10,23 +11,26 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int i = 0;
         t.preenchertabuleiro();
+        List<Casa> casas = t.getCasas();
+        int colunas = 10;
 
-        for (Casa c : t.getCasas()) {
-            System.out.println("+----+----+----+----+----+----+----+----+----+----+----+");
-            for (int j = 0; j < 10; j++) {
-
-                System.out.print(" | " + i + " |");
-
-                if (i == 10) {
-                    System.out.print(ANSI_RED + "| " + i + " |" + ANSI_RESET);
-                }
-
-                i++;
+        for (int inicio = 0; inicio < casas.size(); inicio += colunas) {
+            for (int c = 0; c < colunas; c++) {
+                System.out.print("+----");
             }
-            System.out.println("");
+            System.out.println("+");
+
+            for (int j = inicio; j < inicio + colunas && j < casas.size(); j++) {
+                System.out.printf("| %2d ", t.getCasa(j).getNumero());
+            }
+            System.out.println("|");
         }
+
+        for (int c = 0; c < colunas; c++) {
+            System.out.print("+----");
+        }
+        System.out.println("+");
 
     }
 }

@@ -1,4 +1,10 @@
 C:\Users\Victor\Documents\Tabuleiro\Main.java
 C:\Users\Victor\Documents\Tabuleiro\model\Tabuleiro.java
 C:\Users\Victor\Documents\Tabuleiro\model\casa\Casa.java
+C:\Users\Victor\Documents\Tabuleiro\model\casa\CasaMagica.java
 C:\Users\Victor\Documents\Tabuleiro\model\casa\CasaNormal.java
+C:\Users\Victor\Documents\Tabuleiro\model\casa\CasaPerdeAVez.java
+C:\Users\Victor\Documents\Tabuleiro\model\casa\CasaSorte.java
+C:\Users\Victor\Documents\Tabuleiro\model\casa\CasaSurpresa.java
+C:\Users\Victor\Documents\Tabuleiro\model\casa\CasaVoltarInicio.java
+C:\Users\Victor\Documents\Tabuleiro\model\jogador\Jogador.java

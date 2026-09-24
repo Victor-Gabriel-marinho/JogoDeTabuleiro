@@ -1,19 +1,14 @@
 package model.casa;
 
+import model.jogador.Jogador;
+
 public class CasaNormal extends Casa {
 
-    private final int numero;
-
     public CasaNormal (int numero) {
-        this.numero = numero;
+        super(numero);
     }
 
     @Override
-    public void aplicarEfeito () {}
-
-    public int getNumero() {
-        return numero;
-    }
-
+    public void aplicarEfeito (Jogador j) {}
     
 }
