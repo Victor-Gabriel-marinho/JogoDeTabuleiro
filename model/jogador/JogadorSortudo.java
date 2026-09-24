@@ -2,8 +2,8 @@ package model.jogador;
 
 public class JogadorSortudo extends Jogador{
 
-    public JogadorSortudo(String cor, int casaAtual, int totalJogadas){
-       super(cor, casaAtual, totalJogadas);
+    public JogadorSortudo(String nome, String cor, int casaAtual, int totalJogadas){
+       super(nome, cor, casaAtual, totalJogadas);
     }
 
     @Override

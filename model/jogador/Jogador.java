@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Jogador {
-
+    String nome;
     protected Random aleatorio = new Random();
     private String cor;
     protected int dado1;
@@ -12,7 +12,8 @@ public abstract class Jogador {
     private int casaAtual;
     private int totalJogadas;
 
-    public Jogador(String cor, int casaAtual, int totalJogadas){
+    public Jogador(String nome, String cor, int casaAtual, int totalJogadas){
+        this.nome = nome;
         this.cor = cor;
         this.casaAtual = casaAtual;
         this.totalJogadas =totalJogadas;
