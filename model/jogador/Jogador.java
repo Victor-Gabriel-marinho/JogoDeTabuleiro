@@ -2,7 +2,7 @@ package model.jogador;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Jogador {
+public abstract class Jogador {
 
     protected Random aleatorio = new Random();
     private String cor;
@@ -47,11 +47,7 @@ public class Jogador {
     }
 
 
-    public void sorteioDados(){
-        this.dado1 = aleatorio.nextInt(6) + 1;
-        this.dado2 = aleatorio.nextInt(6) + 1;
-        this.somaDados = this.dado1 + this.dado2;
-    }
+    public abstract void sorteioDados();
 
     public void andarCasas(){
         this.casaAtual += this.somaDados;
