@@ -4,18 +4,18 @@ import java.util.Random;
 
 public class Jogador {
 
-    private Random aleatorio = new Random();
+    protected Random aleatorio = new Random();
     private String cor;
-    private int dado1;
-    private int dado2;
-    private int somaDados;
+    protected int dado1;
+    protected int dado2;
+    protected int somaDados;
     private int casaAtual;
     private int totalJogadas;
 
-    public Jogador(String cor){
+    public Jogador(String cor, int casaAtual, int totalJogadas){
         this.cor = cor;
-        this.casaAtual = 0;
-        this.totalJogadas =0;
+        this.casaAtual = casaAtual;
+        this.totalJogadas =totalJogadas;
 
     }
     public String getCor() {
