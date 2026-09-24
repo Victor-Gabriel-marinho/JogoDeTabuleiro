@@ -9,7 +9,7 @@ public class CasaMagica extends Casa {
     }
 
     @Override
-    public void aplicarEfeito (Jogador jogador) {
-        
+    public String aplicarEfeito (Jogador jogador) {
+        return "";
     }
 }

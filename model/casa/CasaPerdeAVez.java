@@ -9,7 +9,7 @@ public class CasaPerdeAVez extends Casa {
     }
 
     @Override
-    public void aplicarEfeito (Jogador jogador) {
-
+    public String aplicarEfeito (Jogador jogador) {
+        return "Jogador: " + jogador.getNome() + "Perdeu a vez";
     }
 }

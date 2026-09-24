@@ -10,7 +10,7 @@ public abstract class Casa {
         this.numero = numero;
     }
 
-    public abstract void aplicarEfeito(Jogador jogador);
+    public abstract String aplicarEfeito(Jogador jogador);
 
     public int getNumero() {
         return numero;

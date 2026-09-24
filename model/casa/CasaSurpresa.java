@@ -11,9 +11,10 @@ public class CasaSurpresa extends Casa {
     }
 
     @Override
-    public void aplicarEfeito (Jogador jogador) {
+    public String aplicarEfeito (Jogador jogador) {
         Carta carta = baralho.sortear();
         Jogador novoJogador = carta.aplicar(jogador);
+        return "O jogador: " + jogador.getNome() + " agora é " + novoJogador.getClass();
 
     }
 }
