@@ -1,5 +1,6 @@
 package model.casa;
 
+import controller.Jogo;
 import model.jogador.Jogador;
 
 public class CasaVoltarInicio extends Casa {
@@ -9,7 +10,12 @@ public class CasaVoltarInicio extends Casa {
     }
 
     @Override
-    public String aplicarEfeito (Jogador jogador) {
+    public String getSimbolo() {
+        return "<<";
+    }
+
+    @Override
+    public String aplicarEfeito (Jogador jogador, Jogo jogo) {
         jogador.setCasaAtual(0);
         return "O jogador " + jogador.getNome() + " voltou ao início";
     }

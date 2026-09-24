@@ -54,7 +54,7 @@ public class Jogo {
 
         // APLICANDO EFEITO DA CASA
         Casa casaAtual = tabuleiro.getCasa(j.getCasaAtual());
-        String mensagem = casaAtual.aplicarEfeito(j);
+        String mensagem = casaAtual.aplicarEfeito(j, this);
 
         tabuleiroView.mostrarTabuleiro(tabuleiro, jogadores);
         System.out.println(mensagem);
@@ -62,34 +62,26 @@ public class Jogo {
         scan.nextLine();
     }
 
-
-    private void pausar(long milissegundos) {
-        try {
-            Thread.sleep(milissegundos);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
     // Criação de jogadores (fiz manualmente só pra testar)
     private void criarJogadores() {
 
-        Jogador jogador1 = new JogadorNormal("Victor", Cores.AMARELO, 5, 0);
-        Jogador jogador2 = new JogadorNormal("Pedro", Cores.VERMELHO, 10, 0);
-        Jogador jogador3 = new JogadorNormal("PH", Cores.AZUL, 23, 0);
+        Jogador jogador1 = new JogadorNormal("Victor", Cores.AMARELO, 25, 0);
+        Jogador jogador2 = new JogadorNormal("Pedro", Cores.VERMELHO, 20, 0);
+        Jogador jogador3 = new JogadorNormal("PH", Cores.AZUL, 5, 0);
         jogadores.add(jogador1);
         jogadores.add(jogador2);
         jogadores.add(jogador3);
 
     }
 
-    private void mostrarEstadoInicial () {
+    // Mostra jogadores e tabuleiro antes de iniciar o jogo
+    private void mostrarEstadoInicial() {
         //Mostra o tabuleiro inicial
         System.out.println("===INCIANDO A PARTIDA===");
         int i = 0;
         for (Jogador jogador : jogadores) {
 
-            System.out.println("JOGADOR"+i+": " + jogador.getNome());
+            System.out.println("JOGADOR" + i + ": " + jogador.getNome());
             i++;
         }
 
@@ -99,6 +91,40 @@ public class Jogo {
 
         System.out.println("PRESSIONE ENTER PARA INICIAR: ");
         scan.nextLine();
+    }
+
+    // Daqui para baixo usei na aplicação dos efeitos das casas
+    public Jogador jogadorMaisAtras() {
+        Jogador maisAtras = jogadores.getFirst();
+        for (Jogador j : jogadores) {
+
+            if (j.getCasaAtual() < maisAtras.getCasaAtual()) {
+                maisAtras = j;
+            }
+
+        }
+        return maisAtras;
+    }
+
+    public void trocarPosição(Jogador jogador1, Jogador jogador2) {
+
+        int temp = jogador2.getCasaAtual();
+        jogador2.setCasaAtual(jogador1.getCasaAtual());
+        jogador1.setCasaAtual(temp);
+
+    }
+
+    public void adicionarJogadorPerdeAVez (Jogador jogador) {
+        jogadoresPerdeAVez.add(jogador);
+    }
+
+    public void susbtituirJogador (Jogador jogadorAntigo, Jogador jogadorAtual) {
+        int i = jogadores.indexOf(jogadorAntigo);
+        jogadores.set(i, jogadorAtual);
+    }
+
+    public void escolherJogador () {
+
     }
 
     private boolean algumJogadorVenceu() {

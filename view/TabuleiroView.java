@@ -33,12 +33,12 @@ public class TabuleiroView {
                 List<Jogador> aqui = jogadoresPorPosicao.getOrDefault(j, List.of());
 
                 if (aqui.isEmpty()) {
-                    System.out.printf("| %2d ", tabuleiro.getCasa(j).getNumero());
+                    System.out.printf("| %2s ", tabuleiro.getCasa(j).getSimbolo());
                 } else {
                     StringBuilder simbolos = new StringBuilder();
                     for (Jogador jogador : aqui) {
                         simbolos.append(jogador.getCor())
-                                .append(jogador.getCasaAtual())
+                                .append(tabuleiro.getCasa(j).getSimbolo())
                                 .append(Cores.RESET);
                     }
                     System.out.printf("| %2s ", simbolos.toString());
