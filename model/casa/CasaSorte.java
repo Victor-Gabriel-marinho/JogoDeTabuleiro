@@ -9,7 +9,7 @@ public class CasaSorte extends Casa {
     }
 
     @Override
-    public void aplicarEfeito (Jogador j) {
-        
+    public void aplicarEfeito (Jogador jogador) {
+        j.setCasaAtual(j.getCasaAtual() + 3);
     }
 }

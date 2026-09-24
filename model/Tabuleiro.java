@@ -23,7 +23,7 @@ public class Tabuleiro {
          for (int i = 0; i <=39; i++) {
 
             switch (i) {
-                case 10, 25, 18 -> this.casas.add(new CasaPerdeAVez(i));
+                case 10, 25, 38 -> this.casas.add(new CasaPerdeAVez(i));
                 case 13 -> this.casas.add(new CasaSurpresa(i));
                 case 5, 15, 30 -> this.casas.add(new CasaSorte(i));
                 case 17, 27 -> this.casas.add(new CasaVoltarInicio(i));

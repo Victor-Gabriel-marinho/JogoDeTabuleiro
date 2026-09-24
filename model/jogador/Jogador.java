@@ -19,6 +19,11 @@ public abstract class Jogador {
         this.totalJogadas =totalJogadas;
 
     }
+
+    public String getNome() {
+        return nome;
+    }
+
     public String getCor() {
         return cor;
     }
