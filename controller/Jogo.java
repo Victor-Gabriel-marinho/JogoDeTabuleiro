@@ -24,21 +24,22 @@ public class Jogo {
 
     public int verificarEntradaJogadores(){
 
-        int jogador = 0;
-        while(jogador < 2 || jogador > 6) {
+        int total = 0;
+        while(total < 2 || total > 6) {
             System.out.println("Quantos jogadores vão participar? Min: 2, Max: 6 ");
             try {
-                jogador = scan.nextInt();
+                total = scan.nextInt();
                 scan.nextLine();
-                if(jogador < 2 || jogador > 6){
+                if(total < 2 || total > 6){
                     System.out.println("Valor precisa ser de 2 a 6");
                 }
 
             } catch (InputMismatchException e) {
                 System.out.println("Valor precisa ser inteiro!");
+                scan.nextLine();
             }
         }
-        return jogador;
+        return total;
     }
     public int definirSorteJogador(){
         int sorte = 0;
@@ -47,7 +48,7 @@ public class Jogo {
                 System.out.println("Qual a sorte do jogador? Clique:\n 1 - Sortudo\n2-Normal\n3-Azarado");
                 sorte = scan.nextInt();
                 scan.nextLine();
-                if(sorte < 2 || sorte > 6){
+                if(sorte < 1 || sorte > 3){
                     System.out.println("Digite entre 1 a 3");
                 }
             }catch(InputMismatchException e){
@@ -58,10 +59,9 @@ public class Jogo {
 
     public String escolherCor(){
         String cor = "";
-        int cont = 1;
         System.out.println("Opcoes disponiveis de cor: ");
         for(String opcoes : cores){
-            System.out.println(cont + " - " + opcoes);
+            System.out.println(opcoes);
         }
         System.out.println("Digite a cor para o jogador: ");
         while (!cores.contains(cor)){
@@ -119,11 +119,12 @@ public class Jogo {
     public void criarJogadores(){
         int totalJogadores = verificarEntradaJogadores();
         for(int i = 0; i < totalJogadores; i++){
-            String cor = escolherCor();
-            System.out.println("-----Jogador " + i+1+"-----");
-            System.out.println("Qual o nome do jogador "+ i+1 + "? ");
+            int j = i+1;
+            System.out.println("-----Jogador " + j + "-----");
+            System.out.println("Qual o nome do jogador "+ j + "? ");
             String nome = scan.nextLine();
             System.out.println("Qual a cor de " + nome + "? ");
+            String cor = escolherCor();
             int sorteJogador = definirSorteJogador();
             Jogador jogador;
             if(sorteJogador == 1){
