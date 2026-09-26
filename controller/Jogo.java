@@ -112,7 +112,6 @@ public class Jogo {
             jogarRodada(numeroRodada);
             numeroRodada++;
             // QUEBRANDO AQ PARA NÃO FICAR INFINITO
-            break;
         }
 
     }
@@ -157,6 +156,9 @@ public class Jogo {
         }
 
         // FUNÇÃO DE GIRAR DADOS E ANDAR AQUI
+        j.sorteioDados();
+        j.getSomaDados();
+        j.andarCasas();
 
         // APLICANDO EFEITO DA CASA
         Casa casaAtual = tabuleiro.getCasa(j.getCasaAtual());
@@ -168,7 +170,6 @@ public class Jogo {
         scan.nextLine();
     }
 
-    // Criação de jogadores (fiz manualmente só pra testar)
 
 
     // Mostra jogadores e tabuleiro antes de iniciar o jogo
