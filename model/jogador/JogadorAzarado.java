@@ -7,11 +7,10 @@ public class JogadorAzarado extends Jogador{
 
     @Override
     public void sorteioDados() {
-        while (somaDados > 6) {
+        do {
             this.dado1 = aleatorio.nextInt(6) + 1;
             this.dado2 = aleatorio.nextInt(6) + 1;
             this.somaDados = this.dado1 + this.dado2;
-        }
-    }
-}
+        } while (this.somaDados > 6);
+}}
 
