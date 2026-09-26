@@ -3,13 +3,14 @@ package controller;
 import model.Tabuleiro;
 import model.casa.Casa;
 import model.jogador.Jogador;
+import model.jogador.JogadorAzarado;
 import model.jogador.JogadorNormal;
+import model.jogador.JogadorSortudo;
 import view.Cores;
 import view.TabuleiroView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.lang.annotation.AnnotationTypeMismatchException;
+import java.util.*;
 
 public class Jogo {
     private final TabuleiroView tabuleiroView = new TabuleiroView();
@@ -18,8 +19,90 @@ public class Jogo {
     private List<Jogador> jogadores = new ArrayList<>();
     private List<Jogador> jogadoresPerdeAVez = new ArrayList<>();
     private Scanner scan = new Scanner(System.in);
+    private List<String> cores = new ArrayList<>();
+
+
+    public int verificarEntradaJogadores(){
+
+        int jogador = 0;
+        while(jogador < 2 || jogador > 6) {
+            System.out.println("Quantos jogadores vão participar? Min: 2, Max: 6 ");
+            try {
+                jogador = scan.nextInt();
+                scan.nextLine();
+                if(jogador < 2 || jogador > 6){
+                    System.out.println("Valor precisa ser de 2 a 6");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Valor precisa ser inteiro!");
+            }
+        }
+        return jogador;
+    }
+    public int definirSorteJogador(){
+        int sorte = 0;
+        while(sorte < 1 || sorte > 3){
+            try {
+                System.out.println("Qual a sorte do jogador? Clique:\n 1 - Sortudo\n2-Normal\n3-Azarado");
+                sorte = scan.nextInt();
+                scan.nextLine();
+                if(sorte < 2 || sorte > 6){
+                    System.out.println("Digite entre 1 a 3");
+                }
+            }catch(InputMismatchException e){
+                System.out.println("Digite um valor entre 1 e 3");}
+        }
+        return sorte;
+    }
+
+    public String escolherCor(){
+        String cor = "";
+        int cont = 1;
+        System.out.println("Opcoes disponiveis de cor: ");
+        for(String opcoes : cores){
+            System.out.println(cont + " - " + opcoes);
+        }
+        System.out.println("Digite a cor para o jogador: ");
+        while (!cores.contains(cor)){
+            cor = scan.nextLine().trim().toLowerCase();
+            if(!cores.contains(cor)){
+                System.out.println("Opcao cor nao disponivel! ");
+            }
+            else{
+                cores.remove(cor);
+                switch (cor) {
+                    case "amarelo":
+                        cor = Cores.AMARELO;
+                        break;
+                    case "azul":
+                        cor = Cores.AZUL;
+                        break;
+                    case "vermelho":
+                        cor = Cores.VERMELHO;
+                        break;
+                    case "verde":
+                        cor = Cores.VERDE;
+                        break;
+                    case "branco":
+                        cor = Cores.BRANCO;
+                        break;
+                    case "ciano":
+                        cor = Cores.CIANO;
+                        break;
+                }
+                break;
+            }
+
+        }
+        return cor;
+    }
+
+
+
 
     public void iniciarJogo() {
+        cores.addAll(Arrays.asList("amarelo", "azul", "vermelho", "verde", "branco", "ciano"));
         tabuleiro.preenchertabuleiro();
         criarJogadores();
         mostrarEstadoInicial();
@@ -32,6 +115,28 @@ public class Jogo {
             break;
         }
 
+    }
+    public void criarJogadores(){
+        int totalJogadores = verificarEntradaJogadores();
+        for(int i = 0; i < totalJogadores; i++){
+            String cor = escolherCor();
+            System.out.println("-----Jogador " + i+1+"-----");
+            System.out.println("Qual o nome do jogador "+ i+1 + "? ");
+            String nome = scan.nextLine();
+            System.out.println("Qual a cor de " + nome + "? ");
+            int sorteJogador = definirSorteJogador();
+            Jogador jogador;
+            if(sorteJogador == 1){
+                jogador = new JogadorSortudo(nome, cor, 0, 0);
+            }
+            else if(sorteJogador == 2){
+                jogador = new JogadorNormal(nome, cor, 0, 0);
+            }
+            else{
+                jogador = new JogadorAzarado(nome, cor, 0, 0);
+            }
+            jogadores.add(jogador);
+        }
     }
 
     private void jogarRodada(int numeroRodada) {
@@ -63,16 +168,7 @@ public class Jogo {
     }
 
     // Criação de jogadores (fiz manualmente só pra testar)
-    private void criarJogadores() {
 
-        Jogador jogador1 = new JogadorNormal("Victor", Cores.AMARELO, 25, 0);
-        Jogador jogador2 = new JogadorNormal("Pedro", Cores.VERMELHO, 20, 0);
-        Jogador jogador3 = new JogadorNormal("PH", Cores.AZUL, 5, 0);
-        jogadores.add(jogador1);
-        jogadores.add(jogador2);
-        jogadores.add(jogador3);
-
-    }
 
     // Mostra jogadores e tabuleiro antes de iniciar o jogo
     private void mostrarEstadoInicial() {
