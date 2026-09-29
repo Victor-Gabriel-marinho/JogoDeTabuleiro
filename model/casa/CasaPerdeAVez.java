@@ -17,6 +17,6 @@ public class CasaPerdeAVez extends Casa {
     @Override
     public String aplicarEfeito (Jogador jogador, Jogo jogo) {
         jogo.adicionarJogadorPerdeAVez(jogador);
-        return "Jogador: " + jogador.getNome() + " não joga proxima rodada a vez";
+        return "Jogador: " + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e não joga proxima rodada!";
     }
 }

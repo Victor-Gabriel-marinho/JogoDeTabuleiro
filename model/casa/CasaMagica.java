@@ -18,6 +18,6 @@ public class CasaMagica extends Casa {
     public String aplicarEfeito (Jogador jogador, Jogo jogo) {
         Jogador maisAtras =  jogo.jogadorMaisAtras();
         jogo.trocarPosição(jogador, maisAtras);
-        return jogador.getNome() + " trocou de posição com " + maisAtras.getNome();
+        return jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e trocou de posição com " + maisAtras.getNome();
     }
 }

@@ -16,7 +16,10 @@ public class CasaVoltarInicio extends Casa {
 
     @Override
     public String aplicarEfeito (Jogador jogador, Jogo jogo) {
-        jogador.setCasaAtual(0);
-        return "O jogador " + jogador.getNome() + " voltou ao início";
+
+        Jogador jogadorEscolhido = jogo.escolherJogador(jogador);
+        jogadorEscolhido.setCasaAtual(0);
+
+        return "O jogador " + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e voltou o jogador " + jogadorEscolhido.getNome() + " início";
     }
 }

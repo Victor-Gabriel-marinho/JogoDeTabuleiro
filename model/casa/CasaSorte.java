@@ -22,6 +22,6 @@ public class CasaSorte extends Casa {
            return "Jogador azarado não anvaça 3 casas";
         }
         jogador.setCasaAtual(jogador.getCasaAtual() + 3);
-        return "Jogador: " + jogador.getNome() + " Avançou 3 casas";
+        return "Jogador: " + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e Avançou 3 casas";
     }
 }

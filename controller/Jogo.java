@@ -23,7 +23,7 @@ public class Jogo {
 
 
     public int verificarEntradaJogadores(){
-
+        System.out.println("=== CRIAÇÃO DE JOGADORES ===");
         int total = 0;
         while(total < 2 || total > 6) {
             System.out.println("Quantos jogadores vão participar? Min: 2, Max: 6 ");
@@ -41,18 +41,21 @@ public class Jogo {
         }
         return total;
     }
+
     public int definirSorteJogador(){
         int sorte = 0;
         while(sorte < 1 || sorte > 3){
             try {
-                System.out.println("Qual a sorte do jogador? Clique:\n 1 - Sortudo\n2-Normal\n3-Azarado");
+                System.out.println("Qual a sorte do jogador? Clique:\n1 - Sortudo\n2 - Normal\n3 - Azarado");
                 sorte = scan.nextInt();
                 scan.nextLine();
                 if(sorte < 1 || sorte > 3){
-                    System.out.println("Digite entre 1 a 3");
+                    System.out.println("DIGITE UM VALOR DE 1 A 3");
                 }
             }catch(InputMismatchException e){
-                System.out.println("Digite um valor entre 1 e 3");}
+                System.out.println("DIGITE UM VALOR DE 1 A 3");
+                scan.nextLine();
+            }
         }
         return sorte;
     }
@@ -72,24 +75,12 @@ public class Jogo {
             else{
                 cores.remove(cor);
                 switch (cor) {
-                    case "amarelo":
-                        cor = Cores.AMARELO;
-                        break;
-                    case "azul":
-                        cor = Cores.AZUL;
-                        break;
-                    case "vermelho":
-                        cor = Cores.VERMELHO;
-                        break;
-                    case "verde":
-                        cor = Cores.VERDE;
-                        break;
-                    case "branco":
-                        cor = Cores.BRANCO;
-                        break;
-                    case "ciano":
-                        cor = Cores.CIANO;
-                        break;
+                    case "amarelo" -> cor = Cores.AMARELO;
+                    case "azul" -> cor = Cores.AZUL;
+                    case "vermelho" -> cor = Cores.VERMELHO;
+                    case "verde" -> cor = Cores.VERDE;
+                    case "branco" -> cor = Cores.BRANCO;
+                    case "ciano" -> cor = Cores.CIANO;
                 }
                 break;
             }
@@ -97,9 +88,6 @@ public class Jogo {
         }
         return cor;
     }
-
-
-
 
     public void iniciarJogo() {
         cores.addAll(Arrays.asList("amarelo", "azul", "vermelho", "verde", "branco", "ciano"));
@@ -111,30 +99,42 @@ public class Jogo {
         while (!algumJogadorVenceu()) {
             jogarRodada(numeroRodada);
             numeroRodada++;
-            // QUEBRANDO AQ PARA NÃO FICAR INFINITO
+        }
+
+        for (Jogador j : jogadores) {
+            if (j.getCasaAtual() >= 40) {
+                mostrarVencedor(j);
+                break;
+            }
         }
 
     }
+
     public void criarJogadores(){
         int totalJogadores = verificarEntradaJogadores();
+
         for(int i = 0; i < totalJogadores; i++){
             int j = i+1;
+
             System.out.println("-----Jogador " + j + "-----");
             System.out.println("Qual o nome do jogador "+ j + "? ");
+
             String nome = scan.nextLine();
+
             System.out.println("Qual a cor de " + nome + "? ");
+
             String cor = escolherCor();
+
             int sorteJogador = definirSorteJogador();
             Jogador jogador;
-            if(sorteJogador == 1){
-                jogador = new JogadorSortudo(nome, cor, 0, 0);
+
+            switch (sorteJogador) {
+                case 1 -> jogador = new JogadorSortudo(nome, cor, 0, 0);
+                case 2 -> jogador = new JogadorNormal(nome, cor, 0, 0);
+                case 3 -> jogador = new JogadorAzarado(nome, cor, 0, 0);
+                default -> jogador = new JogadorNormal(nome, cor, 0 ,0 );
             }
-            else if(sorteJogador == 2){
-                jogador = new JogadorNormal(nome, cor, 0, 0);
-            }
-            else{
-                jogador = new JogadorAzarado(nome, cor, 0, 0);
-            }
+
             jogadores.add(jogador);
         }
     }
@@ -150,7 +150,7 @@ public class Jogo {
 
     private void jogarTurno(Jogador j) {
         if (jogadoresPerdeAVez.contains(j)) {
-            System.out.println(j.getNome() + " perdeu a vez!");
+            System.out.println(j.getNome() + " PERDEU A VEZ!");
             jogadoresPerdeAVez.remove(j);
             return;
         }
@@ -158,7 +158,16 @@ public class Jogo {
         // FUNÇÃO DE GIRAR DADOS E ANDAR AQUI
         j.sorteioDados();
         j.getSomaDados();
+
+
+        System.out.println("A SOMA DOS DADOS FOI: " + j.getSomaDados());
+
         j.andarCasas();
+        j.incrementarJogadas();
+
+        if (j.getCasaAtual() + j.getSomaDados() >= 40) {
+            return;
+        }
 
         // APLICANDO EFEITO DA CASA
         Casa casaAtual = tabuleiro.getCasa(j.getCasaAtual());
@@ -170,6 +179,14 @@ public class Jogo {
         scan.nextLine();
     }
 
+    private boolean algumJogadorVenceu() {
+        return jogadores.stream().anyMatch(j -> j.getCasaAtual() >= 40);
+    }
+
+    private void mostrarVencedor(Jogador jogadorVencedor) {
+        System.out.println("PARABÉNS "+ jogadorVencedor.getNome() + " VOCÊ VENCEU com "+ jogadorVencedor.getTotalJogadas() +"!!!");
+
+    }
 
 
     // Mostra jogadores e tabuleiro antes de iniciar o jogo
@@ -191,7 +208,8 @@ public class Jogo {
         scan.nextLine();
     }
 
-    // Daqui para baixo usei na aplicação dos efeitos das casas
+    // FUNÇÕES PARA APLICAR EFEITO DAS CASAS:
+
     public Jogador jogadorMaisAtras() {
         Jogador maisAtras = jogadores.getFirst();
         for (Jogador j : jogadores) {
@@ -221,12 +239,24 @@ public class Jogo {
         jogadores.set(i, jogadorAtual);
     }
 
-    public void escolherJogador () {
+    public Jogador escolherJogador (Jogador jogadorQueEscolhe) {
 
+        System.out.println("===ESCOLHA UM JOGADOR PARA VOLTAR AO INÍCIO===");
+
+        int i = 1;
+
+        for ( Jogador j : jogadores ) {
+
+            if (j.hashCode() == jogadorQueEscolhe.hashCode()) continue;
+
+            System.out.println(i + " " + j.getNome());
+            i++;
+
+        }
+        int idEscolhido = scan.nextInt();
+
+        return jogadores.get(idEscolhido - 1);
     }
 
-    private boolean algumJogadorVenceu() {
-        return jogadores.stream().anyMatch(j -> j.getCasaAtual() >= 40);
-    }
 }
 

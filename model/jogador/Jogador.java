@@ -52,6 +52,7 @@ public abstract class Jogador {
         this.casaAtual = casaAtual;
     }
 
+    public void incrementarJogadas() {this.totalJogadas += 1 ; }
 
     public abstract void sorteioDados();
 
