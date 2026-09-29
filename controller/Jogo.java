@@ -90,37 +90,46 @@ public class Jogo {
 
 
 
-    public String escolherCor(){
-        String cor = "";
-        System.out.println("Opcoes disponiveis de cor: ");
-        for(String opcoes : cores){
-            System.out.println(opcoes);
-        }
-        System.out.println("Digite a cor para o jogador: ");
-        while (!cores.contains(cor)){
-            cor = scan.nextLine().trim().toLowerCase();
-            if(!cores.contains(cor)){
-                System.out.println("Opcao cor nao disponivel! ");
-            }
-            else{
-                cores.remove(cor);
-                switch (cor) {
-                    case "amarelo" -> cor = Cores.AMARELO;
-                    case "azul" -> cor = Cores.AZUL;
-                    case "vermelho" -> cor = Cores.VERMELHO;
-                    case "verde" -> cor = Cores.VERDE;
-                    case "branco" -> cor = Cores.BRANCO;
-                    case "ciano" -> cor = Cores.CIANO;
-                }
-                break;
-            }
+    public String escolherCor() {
+        System.out.println("Opcoes disponiveis de cor:");
 
+        for (int i = 0; i < cores.size(); i++) {
+            System.out.println((i + 1) + " - " + cores.get(i));
         }
-        return cor;
+
+        int opcao = 0;
+
+        while (opcao < 1 || opcao > cores.size()) {
+            try {
+                System.out.println("Digite o numero da cor para o jogador: ");
+                opcao = scan.nextInt();
+                scan.nextLine();
+
+                if (opcao < 1 || opcao > cores.size()) {
+                    System.out.println("Opcao de cor nao disponivel!");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um numero valido!");
+                scan.nextLine();
+            }
+        }
+
+        String corEscolhida = cores.remove(opcao - 1);
+
+        return switch (corEscolhida) {
+            case "Amarelo" -> Cores.AMARELO;
+            case "Azul" -> Cores.AZUL;
+            case "Vermelho" -> Cores.VERMELHO;
+            case "Verde" -> Cores.VERDE;
+            case "Branco" -> Cores.BRANCO;
+            case "Ciano" -> Cores.CIANO;
+            default -> throw new IllegalArgumentException("Cor invalida");
+        };
     }
 
     public void iniciarJogo() {
-        cores.addAll(Arrays.asList("amarelo", "azul", "vermelho", "verde", "branco", "ciano"));
+        cores.addAll(Arrays.asList("Amarelo", "Azul", "Vermelho", "Verde", "Branco", "Ciano"));
         tabuleiro.preenchertabuleiro();
         criarJogadores();
         mostrarEstadoInicial();
