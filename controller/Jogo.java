@@ -20,6 +20,7 @@ public class Jogo {
     private List<Jogador> jogadoresPerdeAVez = new ArrayList<>();
     private Scanner scan = new Scanner(System.in);
     private List<String> cores = new ArrayList<>();
+    private List<Integer> sortes = new ArrayList<>();
 
 
     public int verificarEntradaJogadores(){
@@ -42,23 +43,52 @@ public class Jogo {
         return total;
     }
 
-    public int definirSorteJogador(){
+
+    public int definirSorteJogador(List<Integer> sortes) {
         int sorte = 0;
-        while(sorte < 1 || sorte > 3){
+        boolean todasIguais = sortes != null && !sortes.isEmpty();
+
+        if (todasIguais) {
+            for (int i = 1; i < sortes.size(); i++) {
+                if (!sortes.get(i).equals(sortes.get(0))) {
+                    todasIguais = false;
+                    break;
+                }
+            }
+        }
+
+        while (sorte < 1 || sorte > 3) {
             try {
-                System.out.println("Qual a sorte do jogador? Clique:\n1 - Sortudo\n2 - Normal\n3 - Azarado");
+                System.out.println("""
+                    Qual a sorte do jogador? Digite:
+                    1 - Sortudo
+                    2 - Normal
+                    3 - Azarado
+                    """);
+
                 sorte = scan.nextInt();
                 scan.nextLine();
-                if(sorte < 1 || sorte > 3){
-                    System.out.println("DIGITE UM VALOR DE 1 A 3");
+
+                if (sorte < 1 || sorte > 3) {
+                    System.out.println("Digite um valor entre 1 e 3.");
+                    continue;
                 }
-            }catch(InputMismatchException e){
-                System.out.println("DIGITE UM VALOR DE 1 A 3");
+
+                if (todasIguais && sorte == sortes.get(0)) {
+                    System.out.println("Todos os jogadores têm a mesma sorte! Escolha uma sorte diferente!");
+                    sorte = 0;
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um valor entre 1 e 3.");
                 scan.nextLine();
             }
         }
+
         return sorte;
     }
+
+
 
     public String escolherCor(){
         String cor = "";
@@ -125,7 +155,14 @@ public class Jogo {
 
             String cor = escolherCor();
 
-            int sorteJogador = definirSorteJogador();
+            int sorteJogador;
+            if(i == totalJogadores -1){
+                sorteJogador = definirSorteJogador(sortes);
+            }
+            else{
+                sorteJogador = definirSorteJogador(null);
+            }
+            sortes.add(sorteJogador);
             Jogador jogador;
 
             switch (sorteJogador) {
