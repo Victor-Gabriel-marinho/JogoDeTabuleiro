@@ -56,8 +56,8 @@ public abstract class Jogador {
 
     public abstract void sorteioDados();
 
-    public void andarCasas(){
-        this.casaAtual += this.somaDados;
+    public void andarCasas(int quantidade){
+        this.casaAtual += quantidade;
     }
 
 }

@@ -1,5 +1,8 @@
 package controller;
 
+import controller.MododeJogo.FonteDeMovimento;
+import controller.MododeJogo.ModoDebug;
+import controller.MododeJogo.ModoNormal;
 import model.Tabuleiro;
 import model.casa.Casa;
 import model.jogador.Jogador;
@@ -15,7 +18,7 @@ import java.util.*;
 public class Jogo {
     private final TabuleiroView tabuleiroView = new TabuleiroView();
     private final Tabuleiro tabuleiro = new Tabuleiro();
-    private boolean modoAutomatico = true;
+    private FonteDeMovimento fonteDeMovimento;
     private List<Jogador> jogadores = new ArrayList<>();
     private List<Jogador> jogadoresPerdeAVez = new ArrayList<>();
     private Scanner scan = new Scanner(System.in);
@@ -131,6 +134,24 @@ public class Jogo {
     public void iniciarJogo() {
         cores.addAll(Arrays.asList("Amarelo", "Azul", "Vermelho", "Verde", "Branco", "Ciano"));
         tabuleiro.preenchertabuleiro();
+        int modo = 0;
+        while (modo < 1 || modo > 2) {
+            try {
+                System.out.println("=== JOGO DE TABULEIRO ===");
+                System.out.println("Escolha o modo de jogo");
+                System.out.println("1 - Casual");
+                System.out.println("2 - Debug");
+
+                modo = scan.nextInt();
+                scan.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um número válido!");
+                scan.nextLine();
+            }
+
+        }
+        this.fonteDeMovimento = (modo==2) ? new ModoDebug(scan) : new ModoNormal();
+
         criarJogadores();
         mostrarEstadoInicial();
 
@@ -142,7 +163,7 @@ public class Jogo {
 
         for (Jogador j : jogadores) {
             if (j.getCasaAtual() >= 40) {
-                mostrarVencedor(j);
+                mostrarResumoFinal(j);
                 break;
             }
         }
@@ -195,23 +216,22 @@ public class Jogo {
     }
 
     private void jogarTurno(Jogador j) {
+
+        System.out.println("");
         if (jogadoresPerdeAVez.contains(j)) {
             System.out.println(j.getNome() + " PERDEU A VEZ!");
             jogadoresPerdeAVez.remove(j);
             return;
         }
 
-        // FUNÇÃO DE GIRAR DADOS E ANDAR AQUI
-        j.sorteioDados();
-        j.getSomaDados();
+        int quantidade = fonteDeMovimento.obterQuantidadeDeCasas(j);
 
-
-        System.out.println("A SOMA DOS DADOS FOI: " + j.getSomaDados());
-
-        j.andarCasas();
+        System.out.println("=== TURNO DE "+ j.getNome() +" ===");
+        System.out.println("=== "+j.getNome() + " ESTÁ ANDANDO " + quantidade + " CASAS ===");
+        j.andarCasas(quantidade);
         j.incrementarJogadas();
 
-        if (j.getCasaAtual() + j.getSomaDados() >= 40) {
+        if (j.getCasaAtual() >= 40) {
             return;
         }
 
@@ -230,19 +250,27 @@ public class Jogo {
     }
 
     private void mostrarVencedor(Jogador jogadorVencedor) {
-        System.out.println("PARABÉNS "+ jogadorVencedor.getNome() + " VOCÊ VENCEU com "+ jogadorVencedor.getTotalJogadas() +"!!!");
+        System.out.println("PARABÉNS "+ jogadorVencedor.getNome() + " VOCÊ VENCEU COM "+ jogadorVencedor.getTotalJogadas() +" JOGADAS!!!");
 
     }
 
+    private void mostrarResumoFinal(Jogador vencedor) {
+        mostrarVencedor(vencedor);
+        System.out.println("\n=== RESUMO FINAL ===");
+        for (Jogador j : jogadores) {
+            System.out.println(j.getNome() + " - Casa " + j.getCasaAtual()
+                    + " - " + j.getTotalJogadas() + " jogadas");
+        }
+    }
 
     // Mostra jogadores e tabuleiro antes de iniciar o jogo
     private void mostrarEstadoInicial() {
         //Mostra o tabuleiro inicial
         System.out.println("===INCIANDO A PARTIDA===");
-        int i = 0;
+        int i = 1;
         for (Jogador jogador : jogadores) {
 
-            System.out.println("JOGADOR" + i + ": " + jogador.getNome());
+            System.out.println("JOGADOR " + i + ": " + jogador.getNome());
             i++;
         }
 
@@ -287,21 +315,26 @@ public class Jogo {
 
     public Jogador escolherJogador (Jogador jogadorQueEscolhe) {
 
+        System.out.println("");
         System.out.println("===ESCOLHA UM JOGADOR PARA VOLTAR AO INÍCIO===");
 
-        int i = 1;
+        int idEscolhido = -1;
+        while (idEscolhido < 0 || idEscolhido >= jogadores.size() || jogadores.get(idEscolhido) == jogadorQueEscolhe) {
+            try {
 
-        for ( Jogador j : jogadores ) {
+                System.out.print("Digite o número do jogador: ");
+                idEscolhido = scan.nextInt();
+                scan.nextLine();
 
-            if (j.hashCode() == jogadorQueEscolhe.hashCode()) continue;
+            } catch (InputMismatchException e) {
 
-            System.out.println(i + " " + j.getNome());
-            i++;
+                System.out.println("Digite um número válido!");
+                scan.nextLine();
+                idEscolhido = -1;
 
+            }
         }
-        int idEscolhido = scan.nextInt();
-
-        return jogadores.get(idEscolhido - 1);
+        return jogadores.get(idEscolhido);
     }
 
 }

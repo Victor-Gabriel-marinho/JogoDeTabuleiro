@@ -21,7 +21,7 @@ public class CasaSurpresa extends Casa {
         Carta carta = baralho.sortear();
         Jogador novoJogador = carta.aplicar(jogador);
         jogo.susbtituirJogador(jogador, novoJogador);
-        return "O jogador: " + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e agora é " + novoJogador.getClass().getName();
+        return "O jogador: " + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e agora é " + novoJogador.getClass().getSimpleName();
 
     }
 }

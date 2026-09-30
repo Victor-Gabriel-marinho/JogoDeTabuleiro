@@ -16,7 +16,7 @@ public class CasaNormal extends Casa {
 
     @Override
     public String aplicarEfeito (Jogador jogador, Jogo jogo) {
-        return "Jogador:" + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual();
+        return "Jogador: " + jogador.getNome() + " esta na casa "+ jogador.getCasaAtual();
     }
     
 }

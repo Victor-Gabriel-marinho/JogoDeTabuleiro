@@ -3,6 +3,7 @@ package model;
 import model.carta.Carta;
 import model.carta.CartaNormal;
 import model.carta.CartaSorte;
+import model.carta.CarteAzar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Baralho {
         cartas = new ArrayList<>();
         cartas.add(new CartaNormal());
         cartas.add(new CartaSorte());
-        cartas.add(new CartaSorte());
+        cartas.add(new CarteAzar());
 
     }
 
