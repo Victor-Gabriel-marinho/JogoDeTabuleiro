@@ -233,6 +233,7 @@ public class Jogo {
         int indiceJogador = jogadores.indexOf(j);
 
         System.out.println("=== TURNO DE "+ j.getNome() +" ===");
+        System.out.println("=== Dado 1: *"+ j.getDado1() +"* Dado 2: *" + j.getDado2()+ "* ===");
         System.out.println("=== "+j.getNome() + " ESTÁ ANDANDO " + quantidade + " CASAS ===");
         j.andarCasas(quantidade);
         j.incrementarJogadas();
