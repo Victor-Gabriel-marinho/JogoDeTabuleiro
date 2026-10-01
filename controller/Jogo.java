@@ -20,7 +20,7 @@ public class Jogo {
     private final Tabuleiro tabuleiro = new Tabuleiro();
     private FonteDeMovimento fonteDeMovimento;
     private List<Jogador> jogadores = new ArrayList<>();
-    private List<Jogador> jogadoresPerdeAVez = new ArrayList<>();
+    private List<String> jogadoresPerdeAVez = new ArrayList<>();
     private Scanner scan = new Scanner(System.in);
     private List<String> cores = new ArrayList<>();
     private List<Integer> sortes = new ArrayList<>();
@@ -222,19 +222,22 @@ public class Jogo {
     private void jogarTurno(Jogador j, boolean turnoExtra) {
 
         System.out.println("");
-        if (jogadoresPerdeAVez.contains(j)) {
-            System.out.println(j.getNome() + " PERDEU A VEZ!");
-            jogadoresPerdeAVez.remove(j);
+        if (jogadoresPerdeAVez.contains(j.getCor())) {
+            System.out.println(j.getNome().toUpperCase() + " PERDEU A VEZ!");
+            jogadoresPerdeAVez.remove(j.getCor());
             return;
         }
 
         int quantidade = fonteDeMovimento.obterQuantidadeDeCasas(j);
         boolean dadosIguais = j.getDado1() == j.getDado2();
-        int indiceJogador = jogadores.indexOf(j);
 
-        System.out.println("=== TURNO DE "+ j.getNome() +" ===");
-        System.out.println("=== Dado 1: *"+ j.getDado1() +"* Dado 2: *" + j.getDado2()+ "* ===");
-        System.out.println("=== "+j.getNome() + " ESTÁ ANDANDO " + quantidade + " CASAS ===");
+
+        System.out.println("=== TURNO DE "+ j.getNome().toUpperCase() +" ===");
+        System.out.print("=== Dado 1: "+ j.getDado1()+ "  || ");
+        pausar(800);
+        System.out.println("Dado 2: " + j.getDado2()+ " ===");
+        pausar(800);
+        System.out.println("=== "+j.getNome().toUpperCase() + " ESTÁ ANDANDO " + quantidade + " CASAS ===");
         j.andarCasas(quantidade);
         j.incrementarJogadas();
 
@@ -245,16 +248,17 @@ public class Jogo {
         // APLICANDO EFEITO DA CASA
         Casa casaAtual = tabuleiro.getCasa(j.getCasaAtual());
         String mensagem = casaAtual.aplicarEfeito(j, this);
+        pausar(1000);
 
         tabuleiroView.mostrarTabuleiro(tabuleiro, jogadores);
         System.out.println(mensagem);
-        System.out.println("Pressione ENTER para continuar...");
-        scan.nextLine();
+        esperarEnter();
 
         // DADOS IGUAIS: joga de novo, mas só uma vez (sem terceira jogada)
+        int indiceJogador = jogadores.indexOf(j);
         if (dadosIguais && !turnoExtra) {
             Jogador jogadorAtual = jogadores.get(indiceJogador);
-            if (!algumJogadorVenceu() && !jogadoresPerdeAVez.contains(jogadorAtual)) {
+            if (!algumJogadorVenceu() && !jogadoresPerdeAVez.contains(jogadorAtual.getCor())) {
                 System.out.println(jogadorAtual.getNome() + " TIROU DADOS IGUAIS E JOGA NOVAMENTE!");
                 jogarTurno(jogadorAtual, true);
             }
@@ -298,6 +302,27 @@ public class Jogo {
         scan.nextLine();
     }
 
+    private void pausar(long milissegundos) {
+        try {
+            Thread.sleep(milissegundos);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+
+        }
+    }
+
+
+
+    private void esperarEnter() {
+        System.out.println("Pressione ENTER para continuar...");
+
+        long tempoMinimo = System.currentTimeMillis() + 300; // 300ms de "carência"
+
+        do {
+            scan.nextLine();
+        } while (System.currentTimeMillis() < tempoMinimo);
+    }
+
     // FUNÇÕES PARA APLICAR EFEITO DAS CASAS:
 
     public Jogador jogadorMaisAtras() {
@@ -312,7 +337,7 @@ public class Jogo {
         return maisAtras;
     }
 
-    public void trocarPosição(Jogador jogador1, Jogador jogador2) {
+    public void trocarPosicao(Jogador jogador1, Jogador jogador2) {
 
         int temp = jogador2.getCasaAtual();
         jogador2.setCasaAtual(jogador1.getCasaAtual());
@@ -321,7 +346,7 @@ public class Jogo {
     }
 
     public void adicionarJogadorPerdeAVez (Jogador jogador) {
-        jogadoresPerdeAVez.add(jogador);
+        jogadoresPerdeAVez.add(jogador.getCor());
     }
 
     public void susbtituirJogador (Jogador jogadorAntigo, Jogador jogadorAtual) {

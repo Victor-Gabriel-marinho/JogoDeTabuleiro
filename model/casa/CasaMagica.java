@@ -17,7 +17,7 @@ public class CasaMagica extends Casa {
     @Override
     public String aplicarEfeito (Jogador jogador, Jogo jogo) {
         Jogador maisAtras =  jogo.jogadorMaisAtras();
-        jogo.trocarPosição(jogador, maisAtras);
+        jogo.trocarPosicao(jogador, maisAtras);
         return jogador.getNome() + " esta na casa "+ jogador.getCasaAtual() + " e trocou de posição com " + maisAtras.getNome();
     }
 }
