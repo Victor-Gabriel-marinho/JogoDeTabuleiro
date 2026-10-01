@@ -216,6 +216,10 @@ public class Jogo {
     }
 
     private void jogarTurno(Jogador j) {
+        jogarTurno(j, false);
+    }
+
+    private void jogarTurno(Jogador j, boolean turnoExtra) {
 
         System.out.println("");
         if (jogadoresPerdeAVez.contains(j)) {
@@ -225,6 +229,8 @@ public class Jogo {
         }
 
         int quantidade = fonteDeMovimento.obterQuantidadeDeCasas(j);
+        boolean dadosIguais = j.getDado1() == j.getDado2();
+        int indiceJogador = jogadores.indexOf(j);
 
         System.out.println("=== TURNO DE "+ j.getNome() +" ===");
         System.out.println("=== "+j.getNome() + " ESTÁ ANDANDO " + quantidade + " CASAS ===");
@@ -243,6 +249,15 @@ public class Jogo {
         System.out.println(mensagem);
         System.out.println("Pressione ENTER para continuar...");
         scan.nextLine();
+
+        // DADOS IGUAIS: joga de novo, mas só uma vez (sem terceira jogada)
+        if (dadosIguais && !turnoExtra) {
+            Jogador jogadorAtual = jogadores.get(indiceJogador);
+            if (!algumJogadorVenceu() && !jogadoresPerdeAVez.contains(jogadorAtual)) {
+                System.out.println(jogadorAtual.getNome() + " TIROU DADOS IGUAIS E JOGA NOVAMENTE!");
+                jogarTurno(jogadorAtual, true);
+            }
+        }
     }
 
     private boolean algumJogadorVenceu() {
@@ -318,13 +333,27 @@ public class Jogo {
         System.out.println("");
         System.out.println("===ESCOLHA UM JOGADOR PARA VOLTAR AO INÍCIO===");
 
+        for (int i = 0; i < jogadores.size(); i++) {
+            Jogador candidato = jogadores.get(i);
+            if (candidato != jogadorQueEscolhe) {
+                System.out.println((i + 1) + " - " + candidato.getNome()
+                        + " (Casa " + candidato.getCasaAtual() + ")");
+            }
+        }
+
         int idEscolhido = -1;
         while (idEscolhido < 0 || idEscolhido >= jogadores.size() || jogadores.get(idEscolhido) == jogadorQueEscolhe) {
             try {
 
                 System.out.print("Digite o número do jogador: ");
-                idEscolhido = scan.nextInt();
+                idEscolhido = scan.nextInt() - 1;
                 scan.nextLine();
+
+                if (idEscolhido < 0 || idEscolhido >= jogadores.size()) {
+                    System.out.println("Número fora da lista!");
+                } else if (jogadores.get(idEscolhido) == jogadorQueEscolhe) {
+                    System.out.println("Você não pode escolher a si mesmo!");
+                }
 
             } catch (InputMismatchException e) {
 
@@ -338,4 +367,3 @@ public class Jogo {
     }
 
 }
-
